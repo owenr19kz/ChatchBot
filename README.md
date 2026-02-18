@@ -1,4 +1,4 @@
-# ChatchBot
+# CatchBot
 For this project our goal was to create a system that used a speedometer and stepper motor to catch a ball that is launched of a table. We used an Arduino UNO for this project.
 
 Here is our spreadsheet of data that shows our speedometer calibration and accuracy: <img width="428" height="193" alt="speedospread" src="https://github.com/user-attachments/assets/68799658-1bc1-4666-b16f-f642f4e14861" />
