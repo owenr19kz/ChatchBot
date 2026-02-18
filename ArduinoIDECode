@@ -3,11 +3,11 @@ unsigned long elapsedTime = 0; //The calculated time it takes to activate both s
 bool isTiming = false; //Comand that allows only one initial startTime variable unless elapsedTime is calculated
 int timeing = false; //Comand that allows only one initial startTime variable unless elapsedTime is calculated
 const float distance = 0.038; //Variable with a set distance to use in calculations, this distance is the distance between the sensors in meters
-float Vi; //Variable calculated and then used in final calculation to determine the distance the object will fall
-float height = 0.72; //Set variable that uses the preditermined height mesurment of the desk, this value is used in the calculation to determine the distance the object will fall
+float velocityInitial; //Variable calculated and then used in final calculation to determine the distance the object will fall
+const float height = 0.72; //Set variable that uses the preditermined height mesurment of the desk, this value is used in the calculation to determine the distance the object will fall
 #include <Stepper.h> //Include the use of the Stepper library
 #define STEPS 200 // # steps for full 360-degree rotation
-Stepper stepper(STEPS, 2, 3); // Pin 2 connected to DIRECTION & Pin 3 connected to STEP Pin of Driver
+Stepper stepper(STEPS, 2, 3); // Pin 2 connected to DIRECTION & Pin 3 connected to STEP Pin of Drive
 #define motorInterfaceType 1
 float calcDistance; //Changable variable that is responsible for telling the user how far the object will fall in the x diretion
 
@@ -27,28 +27,34 @@ void loop()
   int sensorValue2 = digitalRead(10); //Read the value from pin 10
   int sensorValue = digitalRead(11);  //Read the value from pin 11
   
+if (sensorValue == LOW && !timeing) {
+  
+    startTime = millis(); //When sensor 1 activates start timeing
+    isTiming = true; //Set isTimeing to true to allow second IR sensor to activate
+    timeing = true; //Set timeing to true to allow second IR sensor to activate
+    //Serial.println("Timer Started"); //Print timer started to know sensor has started
+
+  } 
+
   if(sensorValue2 == LOW && timeing) 
   {
     Serial.println("Motion"); //print the messgae Motion when sensor 2 is activated
     elapsedTime = millis() - startTime; //Calculate the time it took for both sensors to activate
+    if(elapsedTime > 0)
+    {
     isTiming = false; //Set isTiming = false to allow first sensor to activate again
     Serial.print("Timer Stopped. Duration (s): ");
     Serial.println(elapsedTime/1000.0);
     Serial.print("velocity (m/s): ");
     Serial.println((distance/(elapsedTime/1000.0)));
-    Vi = (distance/(elapsedTime/1000.0)); //Calculate the initial velocity the object is moving at when the ball first passes the sensors
-    calcDistance = (Vi*sqrt((2*height)/9.82)); //Calculate the distance in meters your object while travel after the sensors
+    velocityInitial = (distance/(elapsedTime/1000.0)); //Calculate the initial velocity the object is moving at when the ball first passes the sensors
+    calcDistance = (velocityInitial*sqrt((2*height)/9.82)); //Calculate the distance in meters your object while travel after the sensors
     Serial.println(calcDistance);
       stepper.step((30000*calcDistance)); //Step set amount multiplied by the calculated distance to move the distance the object will travel
+      delay(3000);
     timeing = false; //Set timing to false to allow sensor 1 to read again
+    }
   }
   
-  if (sensorValue == LOW && !timeing) {
   
-    startTime = millis(); //When sensor 1 activates start timeing
-    isTiming = true; //Set isTimeing to true to allow second IR sensor to activate
-    timeing = true; //Set timeing to true to allow second IR sensor to activate
-    Serial.println("Timer Started"); //Print timer started to know sensor has started
-
-  } 
 }
