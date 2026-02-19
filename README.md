@@ -26,3 +26,8 @@ List of Arduino components:
 Our finished project:
 ![IMG_6780](https://github.com/user-attachments/assets/7471f675-8e03-4255-8189-96608c9e95ef)
 
+
+https://github.com/user-attachments/assets/213d370a-a313-4b12-a4af-6dcb5ade6623
+
+
+
