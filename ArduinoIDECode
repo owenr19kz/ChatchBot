@@ -10,7 +10,7 @@ const float height = 0.72; //Set variable that uses the preditermined height mes
 Stepper stepper(STEPS, 2, 3); // Pin 2 connected to DIRECTION & Pin 3 connected to STEP Pin of Drive
 #define motorInterfaceType 1
 float calcDistance; //Changable variable that is responsible for telling the user how far the object will fall in the x diretion
-
+//The below function is responsible for initalizing each component
 void setup()
 { 
   Serial.begin(9600); //Iniciate serial monitor
@@ -26,7 +26,7 @@ void loop()
 
   int sensorValue2 = digitalRead(10); //Read the value from pin 10
   int sensorValue = digitalRead(11);  //Read the value from pin 11
-  
+  //This first if statment is responsible for begining the timing process after the first sensor is acivated
 if (sensorValue == LOW && !timeing) {
   
     startTime = millis(); //When sensor 1 activates start timeing
@@ -35,7 +35,7 @@ if (sensorValue == LOW && !timeing) {
     //Serial.println("Timer Started"); //Print timer started to know sensor has started
 
   } 
-
+//The below function is responsible for ending the timing process and calculating speed and distance of the ball when the second sensor is activated
   if(sensorValue2 == LOW && timeing) 
   {
     Serial.println("Motion"); //print the messgae Motion when sensor 2 is activated
